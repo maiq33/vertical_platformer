@@ -4,6 +4,8 @@ const c = canvas.getContext('2d')
 canvas.width = 1024
 canvas.height = 564
 
+const gravity = 0.5
+
 class Player {
     constructor(position) {
         this.position = position
@@ -11,18 +13,27 @@ class Player {
             x: 0,
             y: 1,
         }
+        this.height = 100
+        
     }
 
     draw() {
         c.fillStyle = 'red'
-        c.fillRect(this.position.x,this.position.y,100,100)
+        c.fillRect(this.position.x,this.position.y,100,this.height)
     }
 
     update() {
         this.draw()
         this.position.y += this.velocity.y
-        this.velocity.y += .5
+        this.position.x += this.velocity.x
+
+        if (this.position.y + this.height + this.velocity.y < canvas.height) {
+            this.velocity.y += gravity            
+        }else{
+            this.velocity.y = 0
         }
+        }
+
 }
 
 const player = new Player({
@@ -41,7 +52,22 @@ function animate() {
 
     player.update()
     player2.update()
-    console.log(player2.position.y)
+    //console.log(player.position.y,player2.position.y)
 }
 
 animate()
+
+window.addEventListener('keydown', (event) =>{
+    switch (event.key){
+        case 'd':
+            player.velocity.x = 1
+            break
+        case 'a':
+            player.velocity.x = -1
+            break
+        case 'w':
+            player.velocity.y = -15
+            break
+    }
+
+})
