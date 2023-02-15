@@ -13,8 +13,7 @@ class Player {
             x: 0,
             y: 1,
         }
-        this.height = 100
-        
+        this.height = 100        
     }
 
     draw() {
@@ -45,6 +44,15 @@ const player2 = new Player({
     y: 100,
 })
 
+const keys = {
+    d: {
+        pressed: false,         
+    },
+    a: {
+        pressed: false,
+    },
+}
+
 function animate() {
     window.requestAnimationFrame(animate)
     c.fillStyle = "white"
@@ -52,6 +60,10 @@ function animate() {
 
     player.update()
     player2.update()
+
+    player.velocity.x = 0
+    if (keys.d.pressed) player.velocity.x = 1
+    
     //console.log(player.position.y,player2.position.y)
 }
 
@@ -60,14 +72,24 @@ animate()
 window.addEventListener('keydown', (event) =>{
     switch (event.key){
         case 'd':
-            player.velocity.x = 1
+            keys.d.pressed = true
             break
         case 'a':
-            player.velocity.x = -1
+            keys.a.pressed = true
             break
         case 'w':
             player.velocity.y = -15
             break
     }
+})
 
+window.addEventListener('keyup', (event) =>{
+    switch (event.key){
+        case 'd':
+            keys.d.pressed = false
+            break
+        case 'a':
+            keys.a.pressed = false
+            break
+    }
 })
