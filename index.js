@@ -4,6 +4,11 @@ const c = canvas.getContext('2d')
 canvas.width = 1024
 canvas.height = 564
 
+const scaledCanvas = {
+    width: canvas.width / 4,
+    height: canvas.height / 4,
+}
+
 const gravity = 0.5
 
 class Sprite {
@@ -70,10 +75,27 @@ const keys = {
     },
 }
 
+const background = new Sprite({
+    position: {
+        x: 0,
+        y: 0,
+    },
+
+    imageSrc: 'img/background_canvas_vertical_platformer.png',
+    
+    
+})
+
 function animate() {
     window.requestAnimationFrame(animate)
     c.fillStyle = "white"
     c.fillRect(0, 0, canvas.width, canvas.height)
+
+    c.save()
+    c.scale(4, 4)
+    c.translate(0, -background.image.height + scaledCanvas.height)
+    background.update()
+    c.restore()
 
     player.update()
     player2.update()
